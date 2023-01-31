@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{# Load the tag library #}
+{% load bootstrap5 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% load socialaccount %}
+
+<html>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Search!</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+          <a class="navbar-brand mx-auto" href="">Lou's List</a>
+  </div>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if request.user.uniqueuser.is_authenticate %}
+            <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName }} &nbsp &nbsp</p>
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+    <body>
+    <br>
+        <form class="form-inline col-5 offset-sm-1 " action="{% url 'result' %}">
+            <label class="ml-5 mb-0 col-md-6" for="first_name">Subject</label>
+            <input class="form-control  ml-sm-10 mb-2" type="search"   placeholder='"MATH", "Mat", "MA", "th", or blank all match "MATH"' aria-label="Search" name="search">
+            <label class="ml-sm-2 mb-0" for="first_name">Course number</label>
+            <input class="form-control mb-2" type="search"   placeholder='"1010", "101", "10", "01", or blank all match "1010"' aria-label="num" name="num">
+            <label class="ml-sm-2 mb-0" for="first_name">Instructor</label>
+            <input class="form-control  mb-2 " type="search"   placeholder='"Bloomfield", "FIELD", "oom", or blank all match "Bloomfield"' aria-label="inst" name="inst">
+            <label class="ml-sm-2 mb-0" for="first_name">Type</label>
+            <input class="form-control  mb-2"  type="search"   placeholder='"Lecture", "Lec", "L", or blank all match "Lecture"'aria-label="ty" name="ty">
+            <label class="ml-sm-2 mb-0" for="first_name">Building</label>
+            <input class="form-control  mb-2"  type="search"   placeholder='"Physics", "hysics", "PHYS", or blank all match "Physics"' aria-label="bd" name="bd">
+            <label class="ml-sm-2 mb-0" for="first_name">Room number</label>
+            <input class="form-control  mb-2 "  type="search"   placeholder='"203", "20", "03", or blank all match "203"' aria-label="rn" name="rn">
+            <label class="ml-sm-2 mb-0" for="first_name">Days</label>
+            <input class="form-control mb-2"  type="search"   placeholder='"MoWeFr", "MoWe", "MO", "WEFR, "Fr" or blank all match "MoWeFr"' aria-label="dy" name="dy">
+            <label class="ml-sm-2 mb-0" for="first_name">Time</label>
+            <input class="form-control  mb-2 "  type="search"   placeholder='"1:00PM - 1:50PM", "1:00PM", "1:50PM", "1:50", "1:", or blank all match "1:00PM - 1:50PM"' aria-label="tm" name="tm">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </body>
+</html>

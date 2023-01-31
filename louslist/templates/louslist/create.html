@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{# Load the tag library #}
+{% load bootstrap5 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+{% load socialaccount %}
+
+ 
+<html>
+<section class="vh-3000 gradient-custom" style="background-color: #FAFAD2;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            <div class="mb-md-5 mt-md-4 pb-5">
+
+              <h2 class="fw-bold mb-2 text-uppercase">Finish Profile</h2>
+              {% if posts %}
+              <p class="text-white-50 mb-5">Please Complete Your Profile to finish log in!</p>
+              {% else %}
+              <p class="text-white-50 mb-5">Please enter every parameter!</p>
+              {% endif %}
+
+
+              <form class="form-outline form-white mb-4" action="{% url 'finished' %}">
+                <input type="name" name="name" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX">User Name</label>
+                  <br>
+                <input type="lana" name="lana" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX">Last Name</label>
+                    <br>
+                <input type="fina" name="fina" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX">First Name</label>
+                    <br>
+                <input type="major" name="major" class="form-control form-control-lg" />
+                <label class="form-label" for="typeEmailX">Major</label>
+                  <br>
+                  <select class="form-select" name='year' aria-label="Default select example">
+                    <option>2023</option>
+                    <option>2024</option>
+                    <option>2025</option>
+                    <option>2026</option>
+                </select>
+                <label class="form-label" for="typeEmailX">School Year</label>
+                  <br>
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">Complete Profile</button>
+            </form>
+
+              <a class="nav-link" href="logout">Go back home?</a>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</html>

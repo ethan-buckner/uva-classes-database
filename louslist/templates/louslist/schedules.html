@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+{% load bootstrap5 %} {% bootstrap_css %}
+{% load stringfilters %}
+{# Load the tag library #}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load socialaccount %}
+<html>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    {% if request.user.uniqueuser.is_authenticate %}
+                    <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+                    {% else %}
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.user.uniqueuser.is_authenticate %}
+                    <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+                    {% else %}
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'search' %}">Search!</a>
+                </li>
+            </ul>
+        </div>
+        <div class="mx-auto order-0">
+              <a class="navbar-brand mx-auto" href="">Lou's List</a>
+      </div>
+    
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ms-auto">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName }} &nbsp &nbsp</p>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <body>
+    {% if notime %}
+        <h4>Time TBA</h4>
+        <table class="table table-striped table-light">
+            <thead>
+            <tr>
+                <th scope="col">Course Number</th>
+                <th scope="col">Course Title</th>
+                <th scope="col">Starts</th>
+                <th scope="col">Ends</th>
+                <th scope="col">Location</th>
+            </tr>
+            </thead>
+            {% for c in notime %}
+            <tr>
+                <th scope="row">{{ c.course_id }}</th>
+                <td>{{ c.course_description }}</td>
+                <td>{{ c.meeting_start|time_beautifier }}</td>
+                <td>{{ c.meeting_end|time_beautifier }}</td>
+                <td>{{ c.location }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    
+    {% if monday %}
+    <h4>Monday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in monday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    {% if tuesday %}
+    <h4>Tuesday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in tuesday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    {% if wednesday %}
+    <h4>Wednesday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in wednesday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    {% if thursday %}
+    <h4>Thursday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in thursday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    {% if friday %}
+    <h4>Friday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in friday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    {% if saturday %}
+    <h4>Saturday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in saturday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    {% if sunday %}
+    <h4>Sunday</h4>
+    <table class="table table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Starts</th>
+            <th scope="col">Ends</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        {% for c in sunday %}
+        <tr>
+            <th scope="row">{{ c.course_id }}</th>
+            <td>{{ c.course_description }}</td>
+            <td>{{ c.meeting_start|time_beautifier }}</td>
+            <td>{{ c.meeting_end|time_beautifier }}</td>
+            <td>{{ c.location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    </body>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-primary" href="{% url 'friendlist' %}" role="button">Go Back</a>
+        </div>
+</html>

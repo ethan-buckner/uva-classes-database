@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% load socialaccount %}
+{% load stringfilters %}
+
+<html>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Search!</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+          <a class="navbar-brand mx-auto" href="">Lou's List</a>
+  </div>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if request.user.uniqueuser.is_authenticate %}
+            <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName }} &nbsp &nbsp</p>
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+  <body>
+    <h1>{{ subject }}</h1>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Course Number</th>
+          <th scope="col">Course Title</th>
+          <th scope="col">Instructor</th>
+          <th scope="col">Component</th>
+          <th scope="col">Total Enrollment</th>
+          <th scope="col">Meeting Days</th>
+          <th scope="col">Meeting Time</th>
+          <th scope="col">Location</th>
+          <th scope="col">Add this class?</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in posts%}
+        <tr>
+          <th scope="row">{{ i.subject }}{{ i.catalog_number }}</th>
+          <td><a href="{% url 'course' i.subject i.catalog_number %}">{{ i.description }}</a></td>
+          <td>{{ i.instructor}}</td>
+          <td>{{ i.component }}</td>
+          <td>{{ i.enrollment_total }} {{ '/' }} {{ i.class_capacity }}</td>
+          <td>{{ i.days }}</td>
+          <td>{{ i.start_time|time_beautifier }} {{ ' - ' }}
+            {{ i.end_time|time_beautifier }}</td>
+          <td>{{ i.facility_description }}</td>
+          <td><a href="{% url 'addclass' i.subject i.catalog_number i.course_number%}">Add</a></td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+      <a class="btn btn-primary" href="{% url 'search' %}" role="button">Go Back</a>
+      </div>
+  </body>
+</html>
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><style>
+.checked {
+  color: orange;
+}
+</style>
+</head>
+{% load bootstrap5 %} {% bootstrap_css %} {% load socialaccount %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+              <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+              {% if request.user.uniqueuser.is_authenticate %}
+              <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+              {% else %}
+              <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+              {% endif %}
+          </li>
+          <li class="nav-item">
+              {% if request.user.uniqueuser.is_authenticate %}
+              <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+              {% else %}
+              <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+              {% endif %}
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'search' %}">Search!</a>
+          </li>
+      </ul>
+  </div>
+  <div class="mx-auto order-0">
+    <a class="navbar-brand mx-auto" href="">Lou's List</a>
+</div>
+  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ms-auto">
+          {% if request.user.uniqueuser.is_authenticate %}
+          <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName }} &nbsp &nbsp</p>
+          <li class="nav-item">
+              <a class="nav-link" href="logout">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+          </li>
+          {% endif %}
+      </ul>
+  </div>
+</nav>
+<body>
+      <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="mt-4" style="text-transform: uppercase">{{ dept }}{{ course_num }}</h1>
+                <!-- Author -->
+                <h4>Avg review score: {{ review_avg }} ({{ review_count }} review(s))</h4>
+                <h4> Avg difficulty score: {{ difficulty_avg }}</h4>
+                <div class="rating-star">
+                    {% load filter_int %}
+                    {% if review_avg|to_int > 0 %}
+                    <span class="fa fa-star checked"></span>
+                    {% else %}
+                    <span class="fa fa-star"></span>
+                    {% endif %}
+                    {% if review_avg|to_int > 2 %}
+                    <span class="fa fa-star checked"></span>
+                    {% else %}
+                    <span class="fa fa-star"></span>
+                    {% endif %}
+                    {% if review_avg|to_int > 4 %}
+                    <span class="fa fa-star checked"></span>
+                    {% else %}
+                    <span class="fa fa-star"></span>
+                    {% endif %}
+                    {% if review_avg|to_int > 6 %}
+                    <span class="fa fa-star checked"></span>
+                    {% else %}
+                    <span class="fa fa-star"></span>
+                    {% endif %}
+                    {% if review_avg|to_int > 8 %}
+                    <span class="fa fa-star checked"></span>
+                    {% else %}
+                    <span class="fa fa-star"></span>
+                    {% endif %}
+                </div>
+                <a href="{% url 'newreview' dept course_num %}">Leave a review!</a>
+                <table class ="table table-bordered table-striped">
+                    <thead>
+                        {% if review_count|to_int != 0 %}
+                        <tr>
+                            <th scope="col">Reviewer Name</th>
+                            <th scope="col">Overall Rating</th>
+                            <th scope="col">Difficulty Rating</th>
+                            <th scope="col">Review Title</th>
+                        </tr>
+                        {% endif %}
+                    </thead>
+                <tbody>
+                <br></br>
+                {% for review in reviews %}
+                    <tr>
+                    <th scope="row">{{ review.user_name }}</th>
+                    <td>{{ review.overall_rating }}</td>
+                    <td>{{ review.difficulty_rating }}</td>
+                    <td><a href="{% url 'reviewdetail' dept course_num review.id %}">{{ review.review_title }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+</body>
+</html>

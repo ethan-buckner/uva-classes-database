@@ -1,0 +1,98 @@
+<html lang="en">
+  <head>
+      <style>
+          body {
+            padding-bottom: 25px;
+          }
+      </style>
+  </head>
+  {% load bootstrap5 %} {% bootstrap_css %} {% load socialaccount %}
+  {# Display django.contrib.messages as Bootstrap alerts #}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+  {% bootstrap_messages %}
+  
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Search!</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+          <a class="navbar-brand mx-auto" href="">Lou's List</a>
+  </div>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if request.user.uniqueuser.is_authenticate %}
+            <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName }} &nbsp &nbsp</p>
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+  <body>
+    <h1 style="text-transform: uppercase"> {{ subject }}</h1>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+            <th scope="col">Course Number</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Component</th>
+            <th scope="col">Total Enrollment</th>
+            <th scope="col">Meeting Days</th>
+            <th scope="col">Meeting Time</th>
+            <th scope="col">Add this class?</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% load stringfilters %}
+      {% for i in data%}
+        <tr>
+            <th scope="row">{{ i.subject }}{{ i.catalog_number }}</th>
+            <td><a href="{% url 'course' subject i.catalog_number %}">{{ i.description }}</a></td>
+            <td>{{ i.component }}</td>
+            <td>{{ i.enrollment_total }} {{ '/' }} {{ i.class_capacity }}</td>
+            <td>{{ i.meetings.0.days }}</td>
+            <td>{{ i.meetings.0.start_time|time_beautifier }} {{ ' - ' }}
+            {{ i.meetings.0.end_time|time_beautifier }}</td>
+            <td><a href="{% url 'addclass' subject i.catalog_number i.course_number%}">Add</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  <div class="d-flex justify-content-center">
+  <a class="btn btn-primary" href="{% url 'home' %}" role="button">Go Back</a>
+  </div>
+  <a></a>
+  </body>
+</html>

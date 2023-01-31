@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% load bootstrap5 %} {% bootstrap_css %}
+{% load stringfilters %}
+{# Load the tag library #}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load socialaccount %}
+<html>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Search!</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto" href="">Lou's List</a>
+  </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if request.user.uniqueuser.is_authenticate %}
+            <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName }} &nbsp &nbsp</p>
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<label class="ml-10 mb-0 col-md-6" style="font-size:35px;">Your Profile</label>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">UserName</th>
+            <th scope="col" class="text-center">Last Name</th>
+            <th scope="col" class="text-center">First Name</th>
+            <th scope="col" class="text-center">Major</th>
+            <th scope="col" class="text-center">Class Year</th>
+            <th scope="col" class="text-center">Email</th>
+
+        </tr>
+    </thead>
+<tbody>
+{% load stringfilters %}
+    <tr>
+        <td class="text-center">{{request.user.uniqueuser.userName}}</td>
+        <td class="text-center">{{request.user.uniqueuser.lastName}}</td>
+        <td class="text-center">{{request.user.uniqueuser.firstName}}</td>
+        <td class="text-center">{{request.user.uniqueuser.Major}}</td>
+        <td class="text-center">{{request.user.uniqueuser.Year}}</td>
+        <td class="text-center">{{request.user.uniqueuser.userEmail}}</td>
+    </tr>
+</tbody>
+</table>
+<body>
+    {% if request.user.uniqueuser.is_authenticate %}
+    <label class="ml-10 mb-0 col-md-6" style="font-size:35px;">Search Your Friends!</label>
+    <form class="form-inline col-6 offset-sm-3 " action="{% url 'friend_result' %}">
+        <div class="input-group">
+            <input class="form-control  ml-sm-10 mb-2" type="search"   placeholder="search friend's email" aria-label="Search" name="search">
+            <button class="btn btn-outline-success ml-sm-10 mb-2" type="submit">Search</button>
+        </div>
+    </form>
+</body>
+    {% endif %}
+</body>
+<br>
+{% if request.user.uniqueuser.is_authenticate %}
+<label class="ml-10 mb-0 col-md-6" style="font-size:35px;">Friends List</label>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">UserName</th>
+                <th scope="col" class="text-center">Last Name</th>
+                <th scope="col" class="text-center">First Name</th>
+                <th scope="col" class="text-center">Major</th>
+                <th scope="col" class="text-center">Class Year</th>
+                <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center"></th>
+                <th scope="col" class="text-center"></th>
+            </tr>
+        </thead>
+    <tbody>
+    {% load stringfilters %}
+    {% for i in posts.userFriends.all %}
+        <tr>
+            <td class="text-center">{{i.userName}}</td>
+            <td class="text-center">{{i.lastName}}</td>
+            <td class="text-center">{{i.firstName}}</td>
+            <td class="text-center">{{i.Major}}</td>
+            <td class="text-center">{{i.Year}}</td>
+            <td class="text-center">{{i.userEmail}}</td>
+            <td class="text-center"><a href="{% url 'schedules' i.userName %}">View Schedule</a></td>
+            <td class="text-center"><a href="{% url 'removefriend' i.userName %}">Remove Friend?</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="text-center">
+        <b style="font-size: 30px">You Currently Have No Friends</b>
+    </div>
+{% endif %}
+</html>
+

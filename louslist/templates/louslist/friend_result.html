@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% bootstrap_messages %}
+
+{% load socialaccount %}
+{% load stringfilters %}
+
+<html>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'viewschedule' %}">Schedule</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Schedule</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if request.user.uniqueuser.is_authenticate %}
+                <a class="nav-link" href="{% url 'friendlist' %}">Friends List</a>
+                {% else %}
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Friends List</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Search!</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mx-auto order-0">
+      <a class="navbar-brand mx-auto" href="">Lou's List</a>
+</div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if request.user.uniqueuser.is_authenticate %}
+            <p class="text-light bg-dark">You are logged in as: {{ user.uniqueuser.userName}} &nbsp &nbsp</p>
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+  <body>
+
+  {% if posts %}
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th scope="col" class="text-center">UserName</th>
+        <th scope="col" class="text-center">Last Name</th>
+        <th scope="col" class="text-center">First Name</th>
+        <th scope="col" class="text-center">Major</th>
+        <th scope="col" class="text-center">Class Year</th>
+        <th scope="col" class="text-center">Email</th>
+        <th scope="col" class="text-center"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% load stringfilters %}
+    {% for i in posts%}
+      <tr>
+        <td class="text-center">{{i.userName}}</td>
+        <td class="text-center">{{i.lastName}}</td>
+        <td class="text-center">{{i.firstName}}</td>
+        <td class="text-center">{{i.Major}}</td>
+        <td class="text-center">{{i.Year}}</td>
+        <td class="text-center">{{i.userEmail}}</td>
+        <td><a href="{% url 'addfriend' i.userName %}">Add to friendlist?</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+    {% else %}
+    <div class="text-center">
+        <b style="font-size: 30px">No user found with the entered email address</b>
+    </div>
+    {% endif %}
+  </body>
+
+  <div class="fixed-bottom d-flex justify-content-center">
+    <a class="btn btn-primary" href="{% url 'friendlist' %}" role="button">Go Back</a>
+    </div>
+
+</html>
+
